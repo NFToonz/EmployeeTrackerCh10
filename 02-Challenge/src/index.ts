@@ -1,4 +1,5 @@
 import inquirer from "inquirer";
+import { connectToDb } from "./connections";
 
 const mainMenu = [
     {
@@ -9,8 +10,10 @@ const mainMenu = [
         'view all employees', 'add a department', 'add a role', 
         'add an employee','update an employee role'],
     },]
+    await mainMenu();
+};
    
-    inquirer.prompt(mainMenu).then((answers) => {
+    inquirer.prompt(mainMenu).then((answers: { title: any; }) => {
         // Use the same property name: title
         const { title } = answers;
         console.log('You selected:', title);
@@ -22,7 +25,7 @@ const mainMenu = [
               name: 'departmentName',
               message: 'Enter the name of the new department:',
             }
-          ]).then((deptAnswers) => {
+          ]).then((deptAnswers: { departmentName: any; }) => {
             console.log('Department added:', deptAnswers.departmentName);
           });
         } else if (title === 'add a role') {
@@ -42,7 +45,7 @@ const mainMenu = [
               name: 'departmentId',
               message: 'Enter the department ID for the new role:',
             }
-          ]).then((roleAnswers) => {
+          ]).then((roleAnswers: any) => {
             console.log('Role added:', roleAnswers);
           });
         } else if (title === 'add an employee') {
@@ -67,13 +70,15 @@ const mainMenu = [
               name: 'managerId',
               message: "Enter the manager ID (leave blank if none):",
             }
-          ]).then((empAnswers) => {
+          ]).then((empAnswers: any) => {
             console.log('Employee added:', empAnswers);
           });
         } else {
           // For other operations, add your logic here.
           console.log('Performing the selected operation:', title);
         }
+        connectToDb().then(() => {
+          mainMenu();
       });
 
       
