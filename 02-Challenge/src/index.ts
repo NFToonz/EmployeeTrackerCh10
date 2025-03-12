@@ -1,7 +1,13 @@
 import inquirer from "inquirer";
 import { connectToDb } from "./connections";
 
-const mainMenu = [
+const dbName = process.env.DB_NAME;
+const dbUser = process.env.DB_USER;
+const dbPassword = process.env.DB_PASSWORD;
+
+console.log(dbName, dbUser, dbPassword);
+
+const questions = [
     {
         type: 'list',
         message: 'How May I help You today?',
@@ -10,10 +16,9 @@ const mainMenu = [
         'view all employees', 'add a department', 'add a role', 
         'add an employee','update an employee role'],
     },]
-    await mainMenu();
-};
+
    
-    inquirer.prompt(mainMenu).then((answers: { title: any; }) => {
+    inquirer.prompt(questions).then((answers: { title: any; }) => {
         // Use the same property name: title
         const { title } = answers;
         console.log('You selected:', title);
@@ -77,9 +82,9 @@ const mainMenu = [
           // For other operations, add your logic here.
           console.log('Performing the selected operation:', title);
         }
+
         connectToDb().then(() => {
           mainMenu();
-      });
 
       
     
@@ -87,6 +92,10 @@ const mainMenu = [
     
     
     
+
+          function mainMenu() {
+            throw new Error("Function not implemented.");
+          }
     // inquirer.prompt(mainMenu).then((answers) => {
     //     console.log('User responses:', answers);
     //   });
